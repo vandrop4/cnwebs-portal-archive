@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>稳定连接的背后 · leyu 阅读笔记</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #faf8f5;
+      color: #2c2b28;
+      font-family: 'Georgia', 'Noto Serif SC', 'Times New Roman', serif;
+      line-height: 1.85;
+      padding: 2rem 1.5rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-wrap {
+      max-width: 720px;
+      margin: 2rem auto;
+      background: #ffffff;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.02);
+      border-radius: 28px;
+      padding: 2.8rem 2.2rem;
+      flex: 1;
+    }
+
+    /* 标题层级 —— 极简留白，清晰区分 */
+    .article-hero {
+      margin-bottom: 2.8rem;
+      border-bottom: 1px solid #eae7e0;
+      padding-bottom: 1.8rem;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 400;
+      letter-spacing: 1px;
+      color: #1f1f1d;
+      margin-bottom: 0.6rem;
+      line-height: 1.3;
+    }
+
+    .subhead {
+      font-size: 1rem;
+      color: #7f7b74;
+      font-style: italic;
+      margin-top: 0.4rem;
+      border-left: 3px solid #d6d0c6;
+      padding-left: 1rem;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 400;
+      margin: 2.4rem 0 1rem 0;
+      color: #3a3834;
+      border-bottom: 1px dashed #dedbd3;
+      padding-bottom: 0.3rem;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 1.6rem 0 0.6rem 0;
+      color: #4a4641;
+      letter-spacing: 0.3px;
+    }
+
+    p {
+      margin-bottom: 1.2rem;
+      font-size: 1rem;
+      color: #3b3936;
+    }
+
+    /* 引用块 */
+    blockquote {
+      margin: 1.8rem 0;
+      padding: 1rem 1.2rem;
+      background: #f4f1ec;
+      border-left: 6px solid #a69f92;
+      font-style: normal;
+      color: #4f4b44;
+      border-radius: 12px 6px 6px 12px;
+    }
+
+    blockquote p {
+      margin: 0.2rem 0;
+    }
+
+    blockquote cite {
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: #7d766b;
+      text-align: right;
+    }
+
+    /* 内联链接样式 */
+    a {
+      color: #6b5f4f;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 0.5px;
+      text-decoration-color: #c2b7a9;
+      transition: all 0.2s ease;
+    }
+
+    a:hover {
+      color: #3b352b;
+      text-decoration-color: #8b7c68;
+      background-color: #f0ebe3;
+      padding: 0 2px;
+    }
+
+    /* 特点卡片 */
+    .feature-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      margin: 1.8rem 0;
+    }
+
+    .feature-item {
+      flex: 1 1 180px;
+      background: #faf8f4;
+      padding: 1.2rem 1rem;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      border: 1px solid #efebe4;
+    }
+
+    .feature-item strong {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      font-size: 1rem;
+      color: #2f2c28;
+    }
+
+    .feature-item span {
+      font-size: 0.9rem;
+      color: #5d5951;
+      line-height: 1.5;
+    }
+
+    /* FAQ 摘要 */
+    .faq-block {
+      background: #f8f5f0;
+      border-radius: 24px;
+      padding: 1.2rem 1.4rem;
+      margin: 2rem 0 1.2rem 0;
+    }
+
+    .faq-block summary {
+      font-weight: 500;
+      cursor: pointer;
+      color: #3d3a34;
+      padding: 0.4rem 0;
+      list-style: none;
+    }
+
+    .faq-block summary::marker {
+      content: "▸ ";
+      font-size: 1.2rem;
+    }
+
+    .faq-block details[open] summary::marker {
+      content: "▾ ";
+    }
+
+    .faq-block p {
+      margin: 0.6rem 0 0.2rem 0;
+      font-size: 0.95rem;
+      color: #4d4942;
+    }
+
+    /* 访问句（温和收尾） */
+    .visit-note {
+      margin-top: 2.4rem;
+      padding: 1.4rem 0 0.2rem 0;
+      border-top: 1px solid #e5e0d8;
+      text-align: center;
+      color: #5b564c;
+    }
+
+    .visit-note p {
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+      color: #5f5a50;
+    }
+
+    .visit-note a {
+      color: #4c453b;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #eae4db;
+      margin: 2rem 0;
+      opacity: 0.5;
+    }
+
+    /* 响应式 */
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem 0.8rem;
+      }
+
+      .page-wrap {
+        padding: 1.6rem 1.2rem;
+        border-radius: 20px;
+        margin: 0.8rem auto;
+      }
+
+      h1 {
+        font-size: 1.7rem;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      .feature-grid {
+        flex-direction: column;
+      }
+
+      .feature-item {
+        flex: 1 1 auto;
+      }
+    }
+
+    @media (min-width: 1000px) {
+      .page-wrap {
+        padding: 3.2rem 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <!-- hero / 文章标题 -->
+    <div class="article-hero">
+      <h1>稳定的入口，安静的页面</h1>
+      <div class="subhead">—— 关于 <a href="https://cnwebs-portal-leyu.com">leyu</a> 的一点梳理与使用感受</div>
+    </div>
+
+    <!-- 导语段落 -->
+    <p>
+      一个服务的价值，往往不在它最喧哗的那一面，而在它是否能在你需要时，稳定地出现。很久以前我便注意到，有些域名或入口，总在悄悄变化，让人每次访问都像寻宝。而 <a href="https://cnwebs-portal-leyu.com">leyu</a> 给我的第一印象，恰恰相反——它不刻意张扬，但路径清晰，响应从容。这篇文章不打算堆砌功能列表，而是从“入口的稳定性”与“页面说明的可读性”两个角度，记录一些观察。
+    </p>
+
+    <!-- 多段正文：从稳定入口和页面说明展开 -->
+    <h2>入口，不止是一个链接</h2>
+    <p>
+      在网络世界里，“入口”这个词往往被等同于首页地址。但在我看来，真正的入口包含三层：可访问的 URL、一致的页面结构、以及不让人迷惑的内容导航。<a href="https://cnwebs-portal-leyu.com">leyu</a> 在这方面做得比较干净——你打开的每一个子页面，标题层级清晰，没有冗余弹窗，也没有突然跳转的干扰。这种稳定感，在信息过载的今天，反而成了一种稀缺体验。
+    </p>
+    <p>
+      我习惯把常用入口记在笔记里，偶尔复查时发现，有些站点的页面说明已经变了三版，而 <a href="https://cnwebs-portal-leyu.com">leyu</a> 的页面逻辑始终一致：先看到什么，再了解什么，最后可以做什么，每一步都有自然的承接。这不是设计上的巧合，而是对“页面说明”这件事的尊重。
+    </p>
+
+    <h2>页面说明：一种无声的指引</h2>
+    <p>
+      好的页面说明，不会替用户做决定，而是提供足够的信息背景。比如当你需要了解某个模块的用途，它不会只丢给你一句“点击这里”，而是用一两句上下文告诉你“这是什么、为什么放在这里”。我在使用过程中发现，<a href="https://cnwebs-portal-leyu.com">leyu</a> 的很多说明文字都带有这种温和的叙述语气，不夸大，不省略，像一位熟悉路况的朋友在指路。
+    </p>
+    <blockquote>
+      <p>“一个好的入口，就像一扇不会卡住的门。你不需要用力推，它自然顺滑地打开，门后是预期中的空间。”</p>
+      <cite>—— 摘自《界面设计随想》，2024</cite>
+    </blockquote>
+    <p>
+      这句话恰好可以用来形容我访问 <a href="https://cnwebs-portal-leyu.com">leyu</a> 时的体感。没有突兀的引导，没有强迫式的弹窗，每个页面的信息结构都遵循“先概述，再展开，最后提供延伸”的次序。对于需要快速理解站点内容的用户来说，这种秩序非常友好。
+    </p>
+
+    <!-- 特点/场景 —— 用卡片简要描述 -->
+    <h2>几个值得留意的细节</h2>
+    <div class="feature-grid">
+      <div class="feature-item">
+        <strong>一致的标题层级</strong>
+        <span>无论从哪个板块进入，H1、H2、段落间距都保持相同的视觉节奏，减少阅读的认知负荷。</span>
+      </div>
+      <div class="feature-item">
+        <strong>简洁的引用与提示</strong>
+        <span>重要说明用引用块呈现，不滥用高亮或弹幕，让注意力自然聚焦。</span>
+      </div>
+      <div class="feature-item">
+        <strong>响应式下的留白</strong>
+        <span>在手机和桌面端都保持了舒适的正文宽度，文字呼吸感充足。</span>
+      </div>
+      <div class="feature-item">
+        <strong>链接位置自然</strong>
+        <span>文本中的链接多嵌入在叙述句里，不破坏阅读流，例如这里的 <a href="https://cnwebs-portal-leyu.com">leyu</a>。</span>
+      </div>
+    </div>
+
+    <!-- 场景与FAQ摘要 -->
+    <h2>常见疑问摘要</h2>
+    <div class="faq-block">
+      <details>
+        <summary>这个入口适合哪些使用场景？</summary>
+        <p>日常浏览、信息查阅、以及需要稳定访问某个服务时。尤其适合不喜欢频繁更换书签、希望页面说明清晰不绕弯路的用户。</p>
+      </details>
+      <details>
+        <summary>页面内容会频繁变动吗？</summary>
+        <p>根据观察，核心结构和说明逻辑一直保持稳定；内容更新以渐进式为主，不会突然改变导航路径。</p>
+      </details>
+      <details>
+        <summary>链接的可靠性如何？</summary>
+        <p>长时间可用，且域名指向稳定。如果你需要收藏一个不易迷失的起点，可以试试 <a href="https://cnwebs-portal-leyu.com">leyu</a>。</p>
+      </details>
+    </div>
+
+    <!-- 引用提示（额外引用） -->
+    <blockquote style="background: #f3efe9; border-left-color: #b2a596;">
+      <p>“最好的界面，是让用户感觉不到界面的存在。而最好的入口，是让用户忘记自己在寻找入口。”</p>
+      <cite>—— 一段关于极简交互的随想</cite>
+    </blockquote>
+
+    <!-- 访问句 / 温和收尾 -->
+    <div class="visit-note">
+      <p>如果你也看重一个入口的稳定与陈述的克制，不妨将 <a href="https://cnwebs-portal-leyu.com">leyu</a> 加入你的阅读列表。它不喧哗，但始终在那里。</p>
+      <p style="margin-top: 0.6rem; font-size: 0.8rem; color: #9b9489;">—— 写于一个安静的下午，窗外有风。</p>
+    </div>
+
+    <hr />
+    <p style="text-align: right; font-size: 0.8rem; color: #b1aba0; margin-bottom: 0;">
+      · 以上内容为独立观察，仅供页面展示参考 ·
+    </p>
+  </div>
+</body>
+</html>
